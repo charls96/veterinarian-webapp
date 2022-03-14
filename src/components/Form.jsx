@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const Form = () => {
+const Form = ({ patients, setPatients }) => {
   const [petName, setPetName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,13 +12,29 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if([petName, ownerName, email , registerDate, symptoms].includes('')) {
-        setError(true);
-        return;
+    if ([petName, ownerName, email, registerDate, symptoms].includes("")) {
+      setError(true);
+      return;
     }
 
     setError(false);
-  }
+
+    const patientObj = {
+      petName,
+      ownerName,
+      email,
+      registerDate,
+      symptoms,
+    };
+
+    setPatients([...patients, patientObj]);
+
+    setPetName("");
+    setOwnerName("");
+    setEmail("");
+    setRegisterDate("");
+    setSymptoms("");
+  };
 
   return (
     <div className="md:w-1/2 lg:w-2/5 mx-5">
@@ -34,12 +50,11 @@ const Form = () => {
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
         action=""
       >
-
-        {error &&
+        {error && (
           <div className="bg-red-600 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
             <p>All the fields are required</p>
           </div>
-        } 
+        )}
 
         <div className="mb-5">
           <label
