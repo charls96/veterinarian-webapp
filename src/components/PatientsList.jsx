@@ -11,6 +11,7 @@ const PatientsList = ({ patients }) => {
 
       {patients.map( patient => {
         return <Patient
+        key={patient.id}
           patient={patient}
         />;
       })}
