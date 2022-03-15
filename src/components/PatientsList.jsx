@@ -1,7 +1,7 @@
 import Patient from "./Patient";
 import { useEffect } from "react";
 
-const PatientsList = ({ patients, setPatient }) => {
+const PatientsList = ({ patients, setPatient, deletePatient }) => {
   return (
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
       {patients && patients.length ? (
@@ -15,7 +15,7 @@ const PatientsList = ({ patients, setPatient }) => {
           </p>
 
           {patients.map((patient) => {
-            return <Patient key={patient.id} patient={patient} setPatient={setPatient} />;
+            return <Patient key={patient.id} patient={patient} setPatient={setPatient} deletePatient={deletePatient}/>;
           })}
         </>
       ) : (
