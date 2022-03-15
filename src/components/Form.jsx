@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Form = ({ patients, setPatients }) => {
+const Form = ({ patients, setPatients, patient, setPatient }) => {
   const [petName, setPetName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [email, setEmail] = useState("");
@@ -9,6 +9,16 @@ const Form = ({ patients, setPatients }) => {
   const [symptoms, setSymptoms] = useState("");
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(patient).length > 0){
+        setPetName(patient.petName);
+        setOwnerName(patient.ownerName);
+        setEmail(patient.email);
+        setRegisterDate(patient.registerDate);
+        setSymptoms(patient.symptoms);
+    }
+  }, [patient])
 
   const generateId = () => {
     const random = Math.random().toString(36).substr(2);
@@ -32,10 +42,17 @@ const Form = ({ patients, setPatients }) => {
       email,
       registerDate,
       symptoms,
-      id: generateId(),
     };
 
-    setPatients([...patients, patientObj]);
+    if(patient.id) {
+      patientObj.id = patient.id;
+      const updatedPatients = patients.map( patientState => patientState.id === patient.id ? patientObj : patientState);
+      setPatients(updatedPatients);
+      setPatient({});
+    } else {
+      patientObj.id = generateId();
+      setPatients([...patients, patientObj]);
+    }
 
     setPetName("");
     setOwnerName("");
@@ -141,7 +158,7 @@ const Form = ({ patients, setPatients }) => {
         <input
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer rounded transition-all"
           type="submit"
-          value="Add Patient"
+          value= { patient.id ? 'Edit patient' : 'Add patient' }
         />
       </form>
     </div>
